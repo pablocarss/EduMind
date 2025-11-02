@@ -1,4 +1,4 @@
-/*Geral*/
+/*geral*/
 
 * {
   padding: 0;
@@ -6,7 +6,7 @@
   font-family: "Nunito Sans", sans-serif;
 }
 
-/*Header*/
+/*header*/
 
 header {
   border-bottom: 1px solid #e5e7eb;
@@ -29,7 +29,10 @@ nav {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  font-size: 20px;
 }
+
+.logo span:nth-child(1) {font-size: 1rem;}
 
 .logo i {
   font-size: 32px;
@@ -66,36 +69,25 @@ nav {
   width: 100%;
   height: 100%;
   object-fit: cover;
+
   opacity: 0;
   animation: fade 20s infinite;
-}
-
-/*animação das imagens maiores*/
-
-.main-img img:nth-child(1) { animation-delay: 0s; }
-.main-img img:nth-child(2) { animation-delay: 5s; }
-.main-img img:nth-child(3) { animation-delay: 10s; }
-.main-img img:nth-child(4) { animation-delay: 15s; }
-
-@keyframes fade {
-  0% { opacity: 0; }
-  5% { opacity: 1; }
-  25% { opacity: 1; }
-  33% { opacity: 0; }
-  100% { opacity: 0; }
 }
 
 .b-contratar {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -40%);
   color: #ffffff;
   text-align: center;
   background: rgba(0, 0, 0, 0.4);
   padding: 2rem;
   border-radius: 12px;
   max-width: 600px;
+
+  opacity: 0;
+  animation: fadeDown 1s ease-out forwards;
 }
 
 .b-contratar p:first-child {
@@ -118,3 +110,118 @@ nav {
 .b-contratar button:hover {
   background: #1e40af;
 }
+
+/*cards*/
+
+.main-cards span p {
+  text-align: center;
+  padding: 60px;
+  font-size: 25px;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4rem 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  justify-items: center; 
+  
+}
+
+@media (max-width: 768px) {
+  .card-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  background: white;
+  width: 350px;
+  border-radius: 12px;
+  overflow: hidden;  
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out; 
+}
+
+.card.appear {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card:hover {
+  transform: translateY(8px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card-img {
+  position: relative;
+  width: 100%;
+  height: 220px;
+}
+
+.card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-img i {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-size: 1.5rem;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.card h3 {
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 1rem 0 0.5rem;
+  color: #111827;
+}
+
+.card p {
+  text-align: center;
+  font-size: 0.95rem;
+  color: #4b5563;
+  padding: 0 1rem 1.5rem;
+}
+
+/* animação do .b-contratar */
+
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/*animação das imagens maiores*/
+
+.main-img img:nth-child(1) { animation-delay: 0s; }
+.main-img img:nth-child(2) { animation-delay: 5s; }
+.main-img img:nth-child(3) { animation-delay: 10s; }
+.main-img img:nth-child(4) { animation-delay: 15s; }
+
+@keyframes fade {
+  0% { opacity: 0; }
+  5% { opacity: 1; }
+  25% { opacity: 1; }
+  33% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* animação dos cards */
+
