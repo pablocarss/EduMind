@@ -1,4 +1,4 @@
-/*geral*/
+/* geral */
 
 * {
   padding: 0;
@@ -6,7 +6,7 @@
   font-family: "Nunito Sans", sans-serif;
 }
 
-/*header*/
+/* header */
 
 header {
   border-bottom: 1px solid #e5e7eb;
@@ -55,7 +55,7 @@ nav {
   color: #2563eb;
 }
 
-/*main*/
+/* main */
 
 .main-img {
   position: relative;
@@ -111,7 +111,7 @@ nav {
   background: #1e40af;
 }
 
-/*cards*/
+/* cards */
 
 .main-cards span p {
   text-align: center;
@@ -258,8 +258,16 @@ nav {
   transition: color 0.3s;
 }
 
+.footer span {
+  opacity: 50%;
+}
+
 .footer a:hover {
   color: #2563eb;
+}
+
+.footer span a:hover {
+  color: #87adffa2;
 }
 
 .footer-container {
@@ -363,7 +371,7 @@ nav {
   }
 }
 
-/*animação das imagens maiores*/
+/* nimação das imagens maiores */
 
 .main-img img:nth-child(1) { animation-delay: 0s; }
 .main-img img:nth-child(2) { animation-delay: 5s; }
@@ -442,6 +450,7 @@ nav {
 }
 
 /* testmonial mobile */
+
 @media (max-width: 768px) {
   .main-testmonial {
     flex-direction: column;
