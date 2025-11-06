@@ -8,21 +8,49 @@
   <title>Document</title>
 </head>
 <body>
-  <div class="wrapper">
+  <div class="wrapper active" id="loginWrapper">
     <div class="logo">
       <img src="#">
-    </div>
+    </div> <!--logo-->
     <div class="buttons">
-      <button>Login</button>
-      <button>Primeiro Acesso</button>
-    </div>
-  </div>
+      <button id="loginBtn">Login</button>
+      <button id="primeiroBtn">Primeiro Acesso</button>
+    </div> <!--buttons-->
+  </div> <!--wrapper-->
+
+  <div class="wrapper" id="secondWrapper">
+    <div class="logo">
+      <img src="#">
+    </div> <!--logo-->
+    <div class="inputs">
+      <input type="text" placeholder="rgm"> <!--rgm-->
+      <input type="password" placeholder="senha"> <!--senha-->
+      <button>Entrar</button>
+      <button class="back-button">Voltar</button>
+    </div> <!--inputs-->
+  </div> <!--wrapper-->
+
+  <div class="wrapper" id="thirdWrapper">
+    <div class="logo">
+      <img src="#">
+    </div> <!--logo-->
+    <div class="inputs">
+      <p>"registre aqui seu email"</p>
+      <input type="text" placeholder="email"> <!--email-->
+      <button>Entrar</button>
+      <button class="back-button">Voltar</button>
+    </div> <!--inputs-->
+  </div> <!--wrapper-->
+
+  <!--ondas-->
 
   <section>
     <div class="onda ondas1"></div>
     <div class="onda ondas2"></div>
     <div class="onda ondas3"></div>
     <div class="onda ondas4"></div>
-  </section> <!--ondas-->
+  </section>
+
+  <script src="script.js"></script>
 </body>
 </html>
