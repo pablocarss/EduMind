@@ -45,3 +45,8 @@ document.querySelectorAll(".back-button").forEach(btn => {
     switchWrapper(btn.closest(".wrapper"), loginWrapper);
   });
 });
+
+// Botão para entrar
+document.getElementById("btnEntrar").addEventListener("click", () => {
+  window.location.href = "../main-page/index.html";
+});
