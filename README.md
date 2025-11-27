@@ -76,3 +76,13 @@ Certifique-se de ter instalado em sua máquina:
 2.  Configure o servidor Apache Tomcat no NetBeans.
 3.  Clique com o botão direito no projeto e selecione **Run** (Executar).
 4.  O projeto será compilado e implantado no servidor, abrindo a **Landing Page** no seu navegador.
+
+## 📝 Licença
+
+Este projeto está sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+## 📞 Contato
+
+Seu Nome/Nome da Equipe - [contatoeduweb@gmail.com]
+
+Link do Projeto: [https://github.com/Y3rhn/EduMind](https://github.com/Yr3hn/EduMind)
