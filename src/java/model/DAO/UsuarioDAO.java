@@ -1,14 +1,11 @@
 package model.DAO;
 
+import config.ConectaDB;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.DatabaseMetaData;
-
-import java.util.ArrayList;
-import java.util.List;
-import config.ConectaDB;
 import model.Usuario;
 import model.Util;
 
