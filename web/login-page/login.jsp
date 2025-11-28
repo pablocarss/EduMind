@@ -53,44 +53,44 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
-  <title>Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <title>Document</title>
 </head>
 <body>
-
-<div class="wrapper active" id="loginWrapper">
+  <div class="wrapper active" id="loginWrapper">
     <div class="logo">
       <img src="#">
-    </div>
+    </div> <!--logo-->
     <div class="buttons">
       <button id="loginBtn">Login</button>
       <button id="primeiroBtn">Primeiro Acesso</button>
-    </div>
-</div>
+    </div> <!--buttons-->
+  </div> <!--wrapper-->
 
-<div class="wrapper" id="secondWrapper">
+  <div class="wrapper" id="secondWrapper">
     <div class="logo">
       <img src="#">
-    </div>
+    </div> <!--logo-->
+    <div class="inputs">
+      <input type="text" placeholder="rgm"> <!--rgm-->
+      <input type="password" placeholder="senha"> <!--senha-->
+      <button id="btnEntrar">Entrar</button>
+      <button class="back-button">Voltar</button>
+    </div> <!--inputs-->
+  </div> <!--wrapper-->
 
-    <!-- FORMULÁRIO DE LOGIN CORRETO -->
-    <form method="POST" class="inputs">
-      <input type="text" name="rgm" placeholder="RGM">
-      <input type="password" name="senha" placeholder="Senha">
-
-      <button type="submit" id="btnEntrar">Entrar</button>
-      <button type="button" class="back-button">Voltar</button>
-    </form>
-
-    <% if(erro != null){ %>
-        <p style="color:red; margin-top:10px;"><%= erro %></p>
-    <% } %>
-
-</div>
-
-<div class="wrapper" id="thirdWrapper">
+  <div class="wrapper" id="thirdWrapper">
     <div class="logo">
       <img src="#">
-    </div>
+    </div> <!--logo-->
+    <div class="inputs">
+      <p>"Clique para realizar o cadastro"</p>
+      <button id="btnCadastrar" style="width: 200px; height: 50px; background-color: rgba(245, 245, 245, 0.607); margin: 20px;">Cadastrar</button> <!--email-->
+      <button class="back-button">Voltar</button>
+    </div> <!--inputs-->
+  </div> <!--wrapper-->
+
+  <div class="wrapperRegister" id="thirdWrapperRegister"> 
 
     <form method="POST" action="mailto:contatoeduweb@gmail.com" enctype="text/plain" class="inputs">
 
@@ -103,19 +103,24 @@
       <input type="text" id="endereco" name="endereco" placeholder="Endereço" required>
       <input type="text" id="bairro" name="bairro" placeholder="Bairro" required>
 
-      <button type="submit">Enviar Dados</button>
-      <button type="button" class="back-button">Voltar</button>
+      <div class="btnRegister">
+        <button class="sub" type="submit">Finalizar</button>
+        <button class="back-button" class="voltar" type="button">Voltar</button>
+      </div>
     </form>
-</div>
+  </div>
+  <!--ondas-->
 
-<section>
+  <section>
     <div class="onda ondas1"></div>
     <div class="onda ondas2"></div>
     <div class="onda ondas3"></div>
     <div class="onda ondas4"></div>
-</section>
+  </section>
 
-<script src="script.js"></script>
-
+  <div id="overlay"></div>
+  <script src="script.js"></script>   
 </body>
+
+
 </html>
