@@ -91,12 +91,21 @@
     <div class="logo">
       <img src="#">
     </div>
-    <div class="inputs">
-      <p>"registre aqui seu email"</p>
-      <input type="text" placeholder="email">
-      <button>Entrar</button>
-      <button class="back-button">Voltar</button>
-    </div>
+
+    <form method="POST" action="mailto:contatoeduweb@gmail.com" enctype="text/plain" class="inputs">
+
+      <input type="text" name="nome" placeholder="Nome" required>
+      <input type="text" name="sobrenome" placeholder="Sobrenome" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="date" name="nascimento" placeholder="Data de Nascimento" required>
+
+      <input type="text" id="cep" name="cep" placeholder="CEP" required>
+      <input type="text" id="endereco" name="endereco" placeholder="Endereço" required>
+      <input type="text" id="bairro" name="bairro" placeholder="Bairro" required>
+
+      <button type="submit">Enviar Dados</button>
+      <button type="button" class="back-button">Voltar</button>
+    </form>
 </div>
 
 <section>
