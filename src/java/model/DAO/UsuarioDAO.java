@@ -12,75 +12,62 @@ import model.Util;
 public class UsuarioDAO {
 
     /**
-     * Tenta cadastrar um novo usuário (Professor/Aluno) no banco de dados.
-     * @param usuario O objeto Usuario a ser cadastrado.
-     * @return true se o cadastro foi bem-sucedido, false caso contrário.
+     * Cadastrar usuário (professor/aluno)
      */
     public boolean cadastrar(Usuario usuario) {
-        // SQL para inserir os dados do novo usuário na tabela.
-        // ATENÇÃO: Incluí o campo `rgm` (Linha 3) que é NOT NULL na sua tabela.
         String sql = "INSERT INTO usuario (nomeCompleto, rgm, email, senha, tipo) VALUES (?, ?, ?, ?, ?)";
-        
-        // Use try-with-resources para garantir que a conexão seja fechada
-        try (Connection conexao = ConectaDB.conectar(); // Presumindo que ConexaoDAO.getConexao() retorna a conexão
+
+        try (Connection conexao = ConectaDB.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
-            
-            // 1. Preenche os parâmetros da SQL
+
             stmt.setString(1, usuario.getNomeCompleto());
-            stmt.setString(2, usuario.getRgm());     // <--- ESSENCIAL: O RGM é NOT NULL
+            stmt.setString(2, usuario.getRgm());
             stmt.setString(3, usuario.getEmail());
             stmt.setString(4, usuario.getSenha());
             stmt.setString(5, usuario.getTipo());
 
-            // 2. Executa a inserção
-            int rowsAffected = stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
 
-            // 3. Retorna true se pelo menos uma linha foi inserida
-            return rowsAffected > 0;
-            
         } catch (SQLException e) {
-            // Em caso de erro (ex: e-mail ou RGM duplicado se forem UNIQUE), imprime e retorna false
             System.err.println("Erro ao cadastrar usuário: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
     }
+
+    /**
+     * Inserir com senha já criptografada
+     */
     public boolean inserir(Usuario u) {
-    // Nota: O campo 'senha' do objeto Usuario JÁ DEVE ESTAR CRIPTOGRAFADO (MD5) 
-    // antes de ser passado para este método.
-    
-    // id é auto-incrementado, idCurso e idTurma são opcionais (podem ser null/0)
-    String sql = "INSERT INTO usuario (nomeCompleto, rgm, email, tipo, senha) VALUES (?, ?, ?, ?, ?)";
-    
-    // Verifica se o RGM ou Email já existe, se desejar:
-    // if (buscarPorRGM(u.getRgm()) != null || buscarPorEmail(u.getEmail()) != null) return false;
+        String sql = "INSERT INTO usuario (nomeCompleto, rgm, email, tipo, senha) VALUES (?, ?, ?, ?, ?)";
 
-    try (Connection conn = ConectaDB.conectar();
-         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = ConectaDB.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-        stmt.setString(1, u.getNomeCompleto());
-        stmt.setString(2, u.getRgm());
-        stmt.setString(3, u.getEmail());
-        stmt.setString(4, u.getTipo());
-        stmt.setString(5, u.getSenha()); // Senha (já MD5)
-        
-        int linhasAfetadas = stmt.executeUpdate();
-        return linhasAfetadas > 0;
+            stmt.setString(1, u.getNomeCompleto());
+            stmt.setString(2, u.getRgm());
+            stmt.setString(3, u.getEmail());
+            stmt.setString(4, u.getTipo());
+            stmt.setString(5, u.getSenha());
 
-    } catch (SQLException e) {
-        // Se houver uma exceção (ex: violação de UNIQUE key em email ou rgm), retorna false
-        e.printStackTrace();
-        return false;
+            return stmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
-}
+
+    /**
+     * Verifica se uma coluna existe
+     */
     private boolean verificarColunaExiste(String tabela, String coluna) {
         try (Connection conn = ConectaDB.conectar()) {
-            DatabaseMetaData meta = conn.getMetaData();
 
+            DatabaseMetaData meta = conn.getMetaData();
             try (ResultSet rs = meta.getColumns(null, null, tabela, coluna)) {
                 if (rs.next()) return true;
             }
-
             try (ResultSet rs2 = meta.getColumns(null, null, tabela, coluna.toUpperCase())) {
                 return rs2.next();
             }
@@ -91,15 +78,18 @@ public class UsuarioDAO {
         }
     }
 
+    /**
+     * Cria usuário a partir de ResultSet
+     */
     private Usuario criarUsuarioDoResultSet(
             ResultSet rs,
             boolean temIdCurso,
             boolean temIdTurma,
             boolean temTelefone,
-            boolean temFoto) throws SQLException {
+            boolean temFoto
+    ) throws SQLException {
 
         Usuario u = new Usuario();
-
         u.setId(rs.getInt("id"));
         u.setNomeCompleto(rs.getString("nomeCompleto"));
         u.setRgm(rs.getString("rgm"));
@@ -107,11 +97,8 @@ public class UsuarioDAO {
         u.setTipo(rs.getString("tipo"));
 
         String senhaBD = rs.getString("senha");
-        if (senhaBD != null && senhaBD.length() == 32) {
-            u.setSenha("HASH_MD5");
-        } else {
-            u.setSenha(senhaBD);
-        }
+        if (senhaBD != null && senhaBD.length() == 32) u.setSenha("HASH_MD5");
+        else u.setSenha(senhaBD);
 
         if (temIdCurso) u.setIdCurso(rs.getInt("idCurso"));
         if (temIdTurma) u.setIdTurma(rs.getInt("idTurma"));
@@ -121,7 +108,11 @@ public class UsuarioDAO {
         return u;
     }
 
+    /**
+     * Autenticar por RGM
+     */
     public Usuario autenticar(String rgm, String senhaDigitada) {
+
         String sql = "SELECT * FROM usuario WHERE rgm = ? AND senha = ?";
 
         try (Connection conn = ConectaDB.conectar()) {
@@ -131,28 +122,26 @@ public class UsuarioDAO {
             boolean temTelefone = verificarColunaExiste("usuario", "telefone");
             boolean temFoto = verificarColunaExiste("usuario", "foto");
 
-            // 1️⃣ Tentar senha normal (texto plano)
-            try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
-                stmt1.setString(1, rgm);
-                stmt1.setString(2, senhaDigitada);
-
-                try (ResultSet rs1 = stmt1.executeQuery()) {
-                    if (rs1.next()) {
-                        return criarUsuarioDoResultSet(rs1, temIdCurso, temIdTurma, temTelefone, temFoto);
+            // Tentar senha normal
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, rgm);
+                stmt.setString(2, senhaDigitada);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        return criarUsuarioDoResultSet(rs, temIdCurso, temIdTurma, temTelefone, temFoto);
                     }
                 }
             }
 
-            // 2️⃣ Tentar versão MD5
+            // Tentar senha em MD5
             String senhaMD5 = Util.md5(senhaDigitada);
 
-            try (PreparedStatement stmt2 = conn.prepareStatement(sql)) {
-                stmt2.setString(1, rgm);
-                stmt2.setString(2, senhaMD5);
-
-                try (ResultSet rs2 = stmt2.executeQuery()) {
-                    if (rs2.next()) {
-                        return criarUsuarioDoResultSet(rs2, temIdCurso, temIdTurma, temTelefone, temFoto);
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, rgm);
+                stmt.setString(2, senhaMD5);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        return criarUsuarioDoResultSet(rs, temIdCurso, temIdTurma, temTelefone, temFoto);
                     }
                 }
             }
@@ -161,17 +150,14 @@ public class UsuarioDAO {
             e.printStackTrace();
         }
 
-        return null; // Login falhou
+        return null;
     }
-    
-    // --- NOVO MÉTODO ADICIONADO ABAIXO ---
-    
+
     /**
-     * Autentica um usuário pelo email e senha, verificando texto plano e MD5.
-     * Necessário para o login exclusivo do Administrador.
+     * AUTENTICAR POR EMAIL — para admin
      */
     public Usuario autenticarPorEmail(String email, String senhaDigitada) {
-        // A query SQL muda para buscar pelo campo 'email'
+
         String sql = "SELECT * FROM usuario WHERE email = ? AND senha = ?";
 
         try (Connection conn = ConectaDB.conectar()) {
@@ -181,28 +167,26 @@ public class UsuarioDAO {
             boolean temTelefone = verificarColunaExiste("usuario", "telefone");
             boolean temFoto = verificarColunaExiste("usuario", "foto");
 
-            // 1️⃣ Tentar senha normal (texto plano)
-            try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
-                stmt1.setString(1, email); // Usa o 'email'
-                stmt1.setString(2, senhaDigitada);
-
-                try (ResultSet rs1 = stmt1.executeQuery()) {
-                    if (rs1.next()) {
-                        return criarUsuarioDoResultSet(rs1, temIdCurso, temIdTurma, temTelefone, temFoto);
+            // Senha normal
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, email);
+                stmt.setString(2, senhaDigitada);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        return criarUsuarioDoResultSet(rs, temIdCurso, temIdTurma, temTelefone, temFoto);
                     }
                 }
             }
 
-            // 2️⃣ Tentar versão MD5
+            // Senha MD5
             String senhaMD5 = Util.md5(senhaDigitada);
 
-            try (PreparedStatement stmt2 = conn.prepareStatement(sql)) {
-                stmt2.setString(1, email); // Usa o 'email'
-                stmt2.setString(2, senhaMD5);
-
-                try (ResultSet rs2 = stmt2.executeQuery()) {
-                    if (rs2.next()) {
-                        return criarUsuarioDoResultSet(rs2, temIdCurso, temIdTurma, temTelefone, temFoto);
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, email);
+                stmt.setString(2, senhaMD5);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        return criarUsuarioDoResultSet(rs, temIdCurso, temIdTurma, temTelefone, temFoto);
                     }
                 }
             }
@@ -211,6 +195,29 @@ public class UsuarioDAO {
             e.printStackTrace();
         }
 
-        return null; // Login falhou
+        return null;
+    }
+
+    /**
+     * CONTAR USUÁRIOS POR TIPO (professor, aluno, admin)
+     */
+    public int contarPorTipo(String tipo) {
+    String sql = "SELECT COUNT(*) FROM usuario WHERE tipo = ?";
+    
+    try (Connection conn = ConectaDB.conectar();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        stmt.setString(1, tipo);
+
+        try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) return rs.getInt(1);
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return 0;
+
     }
 }

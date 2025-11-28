@@ -29,10 +29,10 @@
                         response.sendRedirect("../main/admin/portalAdmin.jsp");
                         return;
                     case "PROFESSOR":
-                        response.sendRedirect("portalProfessor.jsp");
+                        response.sendRedirect("../main/professor/main-page/portalProfessor.jsp");
                         return;
                     default:
-                        response.sendRedirect("portalAluno.jsp");
+                        response.sendRedirect("../main/aluno/main-page/portalAluno.jsp");
                         return;
                 }
             } else {

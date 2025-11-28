@@ -14,6 +14,8 @@
     
     // Captura o nome para exibição na Navbar
     String nomeAdmin = usuarioLogado.getNomeCompleto() != null ? usuarioLogado.getNomeCompleto() : "Admin";
+    
+
 %>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -23,10 +25,12 @@
   <title>EduMind - Painel Administrativo</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="src/style.css" rel="stylesheet"/>
 
-    <link rel="stylesheet" href="src/style.css" />
+    
 
-    <style>
+
+<style>
         .modal-overlay {
             display: none; /* Inicia oculto */
             position: fixed;
@@ -110,17 +114,12 @@
       </div>
 
       <div class="top-actions">
-        <div class="user-info" title="Usuário">
-          <i class="fa-solid fa-user-circle"></i>
-                    <span id="userName"><%= nomeAdmin %></span>
-        </div>
-        <button id="btnLogout" class="btn-ghost" title="Sair"><i class="fa-solid fa-right-from-bracket"></i></button>
+        <button id="btnLogout" class="btn-ghost" title="Sair"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
       </div>
     </header>
 
         <section class="content">
             <section id="dashboard" class="panel active-panel">
-        <h2>Dashboard</h2>
 
         <div class="cards">
           <div class="card">
@@ -156,89 +155,9 @@
           </div>
         </div>
 
-        <div class="welcome-card">
-          <h3>Bem-vindo ao Painel</h3>
-          <p>Use a barra lateral para navegar entre registros e editar cadastros. Este painel salva localmente (localStorage).</p>
-        </div>
       </section>
 
-            <section id="professores" class="panel">
-        <h2>Professores</h2>
-
-        <div class="panel-grid">
-                    
-          <div class="card list-card">
-            <h3>Lista de Professores</h3>
-            <ul id="lista-professores" class="list"></ul>
-                        <button type="button" id="limpar-professores" class="btn-ghost" style="margin-top: 15px;">Limpar todos</button>
-          </div>
-        </div>
-      </section>
-
-            <section id="alunos" class="panel">
-        <h2>Alunos</h2>
-
-        <div class="panel-grid">
-          <form id="form-aluno" class="card form-card">
-            <h3>Novo Aluno</h3>
-            <input name="nome" type="text" placeholder="Nome completo" required />
-            <input name="email" type="email" placeholder="E-mail" required />
-            <input name="turma" type="text" placeholder="Turma" required />
-            <div class="form-actions">
-              <button type="submit" class="btn-primary">Registrar</button>
-              <button type="button" id="limpar-alunos" class="btn-ghost">Limpar todos</button>
-            </div>
-          </form>
-
-          <div class="card list-card">
-            <h3>Lista de Alunos</h3>
-            <ul id="lista-alunos" class="list"></ul>
-          </div>
-        </div>
-      </section>
-
-            <section id="turmas" class="panel">
-        <h2>Turmas</h2>
-
-        <div class="panel-grid">
-          <form id="form-turma" class="card form-card">
-            <h3>Nova Turma</h3>
-            <input name="nome" type="text" placeholder="Nome da turma" required />
-            <input name="ano" type="text" placeholder="Ano" required />
-            <div class="form-actions">
-              <button type="submit" class="btn-primary">Registrar</button>
-              <button type="button" id="limpar-turmas" class="btn-ghost">Limpar todos</button>
-            </div>
-          </form>
-
-          <div class="card list-card">
-            <h3>Lista de Turmas</h3>
-            <ul id="lista-turmas" class="list"></ul>
-          </div>
-        </div>
-      </section>
-
-            <section id="disciplinas" class="panel">
-        <h2>Disciplinas</h2>
-
-        <div class="panel-grid">
-          <form id="form-disciplina" class="card form-card">
-            <h3>Nova Disciplina</h3>
-            <input name="nome" type="text" placeholder="Nome da disciplina" required />
-            <input name="codigo" type="text" placeholder="Código (ex: MAT101)" required />
-            <div class="form-actions">
-              <button type="submit" class="btn-primary">Registrar</button>
-              <button type="button" id="limpar-disciplinas" class="btn-ghost">Limpar todos</button>
-            </div>
-          </form>
-
-          <div class="card list-card">
-            <h3>Lista de Disciplinas</h3>
-            <ul id="lista-disciplinas" class="list"></ul>
-          </div>
-        </div>
-      </section>
-    </section>
+            
   </main>
 
     <div id="modal-professor" class="modal-overlay">
@@ -342,7 +261,20 @@
             // switchPanel('dashboard', document.querySelector('.menu-item.active'));
 
             // *Adicione aqui o restante da sua lógica JavaScript (limpar listas, salvar dados, etc.)*
-        });
+            
+            function atualizarContadores(){
+                fetch("contarUsuarios")
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById("count-professores").innerText = data.professores;
+                            document.getElementById("count-alunos").innerText = data.alunos;
+                })
+                        .catch(err => console.error("Erro ao buscar contadores:", err));
+            }
+            atualizarContadores();
+    });
+        
+        
     </script>
 </body>
 </html>

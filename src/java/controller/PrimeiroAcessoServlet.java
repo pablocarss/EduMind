@@ -28,10 +28,10 @@ public class PrimeiroAcessoServlet extends HttpServlet {
         }
 
         // EMAIL DO REMETENTE
-        String remetente = "SEU_EMAIL"; // Coloque aqui o email do remetente
+        String remetente = "pedrosv020@gmail.com";
 
         // SENHA DE APLICATIVO DO GMAIL
-        String senha = "SUA_SENHA_AQUI"; // Coloque aqui a senha do aplicativo
+        String senha = "qtnppckzyxirajdr";
 
         // CONFIGURAÇÕES SMTP
         Properties props = new Properties();
