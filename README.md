@@ -81,15 +81,15 @@ Certifique-se de ter instalado em sua máquina:
 
 Este projeto está sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-## 📞 Creditos
+## 📝 Creditos
 
 Henry Guilherme (front end dev e design) 
-git:
+git: https://github.com/Yr3hn
 
 Pedro Seudo ()
-git:
+git: https://github.com/pedrosvalenti
 
-Pablo ()
-git:
+Pablo Cardoso ()
+git: https://github.com/pablocarss
 
 Link do Projeto: [https://github.com/Y3rhn/EduMind](https://github.com/Yr3hn/EduMind)
